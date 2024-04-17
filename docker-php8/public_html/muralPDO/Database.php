@@ -4,19 +4,14 @@
 
         static $db;
     
-        public function __construct(){
+        public static function getConnection(){
 
             if(self::$db == null){
                 self::$db = new PDO("mysql:host=mariadb;dbname=tads","root","root");
-                
-                if(self::$db->connect_errno > 0){
-                    die("Ocorreu um erro { self::$db->connect_error}");
-                }
             }
-        }
-        function getConnection(){
             return self::$db;
         }
+       
 
         function closeConnection(){
             self::$db->close();
