@@ -3,8 +3,8 @@
     require_once "InterfaceDAO.php";
 
 class RecadoDAO extends Recado implements InterfaceDAO{
-   
-    public function criar($dados){
+
+    public function criar($dados, $nome, $email, $cidade, $texto){
 
             $con = Database::getConnection();
             $sql = "INSERT INTO tads.recados
@@ -14,24 +14,43 @@ class RecadoDAO extends Recado implements InterfaceDAO{
             $stmt->bindValue(':nome',$nome);
             $stmt->bindValue(':email',$email);
             $stmt->bindValue(':cidade',$cidade);
-            $stmt->bindValue(':texto',$texto);  
+            $stmt->bindValue(':texto',$texto);
             $stmt->execute();
     }
-    
+
     public function deletar($id){
-
+        $con = Database::getConnection();
+        $sql = "DELETE FROM tads.recados WHERE id=:id;";
+        $stmt = $con->prepare($sql);
+        $stmt->bindValue(':id',$id);
+        return $stmt->execute();
     }
-    
+
     public function buscar($id){
-
+        $con = Database::getConnection();
+        $sql = "SELECT id, nome, email, cidade, texto FROM tads.recados WHERE id=id:";
+        $stmt = $con->prepare($sql);
+        $stmt->bindValue(':id',$id);
+        $stmt->execute();
+        $stmt->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'RecadoDAO');
+        return $stmt->fetch();
     }
-    
+
     public function buscarTodos(){
-
+        $con = Database::getConnection();
+        $sql = "SELECT id, nome, cidade, texto FROM tads.recados";
+        $stmt = $con->prepare($sql);
+        $stmt->execute();
+        $stmt->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'RecadoDAO');
+        return $stmt->fetchAll();
     }
-    
+
     public function atualizar($id, $dados){
-            
+        global $nome;
+        global $email;
+        global $cidade;
+        global $texto;
+
             $con = Database::getConnection();
             $sql = "UPDATE tads.recados SET nome=:nome, email=:email, cidade=:cidade, texto=:texto WHERE id=:id";
             $stmt = $con->prepare($sql);
@@ -39,8 +58,8 @@ class RecadoDAO extends Recado implements InterfaceDAO{
             $stmt->bindValue(':nome',$nome);
             $stmt->bindValue(':email',$email);
             $stmt->bindValue(':cidade',$cidade);
-            $stmt->bindValue(':texto',$texto);  
-            $stmt->execute(); 
+            $stmt->bindValue(':texto',$texto);
+            $stmt->execute();
 
     }
 

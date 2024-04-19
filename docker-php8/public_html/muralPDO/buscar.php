@@ -4,11 +4,12 @@
 </form>
 
 <?php
+global $con;
 
-if (isset($_POST["buscar"]))
+if (isset($_POST["buscar"])):
     $id = $_POST["buscar"];
     $sql = "SELECT id, nome, email, cidade, texto FROM tads.recados WHERE id=?;";
-    
+
     $stmt = $con->prepare($sql);
     $stmt->bind_param(':id', $id);
     $stmt->execute();
@@ -17,12 +18,12 @@ if (isset($_POST["buscar"]))
 
     $stmt ->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE,'RecadoDAO');
 
-    if ($stmt->execute()) 
-        while ($recado = $stmt->fetch())
+    if ($stmt->execute()):
+        while ($recado = $stmt->fetch()):
             var_dump($recado);
         endwhile;
     endif;
 
-endif;    
-        
-   
+endif;
+
+

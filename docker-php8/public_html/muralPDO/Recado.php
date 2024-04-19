@@ -2,10 +2,10 @@
 
 class Recado {
     private $id;
-    private $nome;
-    private $email;
-    private $cidade;
-    private $texto;
+    public $nome;
+    public $email;
+    public $cidade;
+    public $texto;
 
     function imprimeLinhaTabela(){
         echo "

@@ -1,26 +1,24 @@
 <?php
+global $con;
 require_once "RecadoDAO.php";
 
     if (isset($_GET["alterar"])):
         $id = $_GET["alterar"];
         $sql = "SELECT id, nome, email, cidade, texto FROM tads.recados WHERE id=:id;";
-        
+
         $stmt = $con->prepare($sql);
         $stmt->bindValue(':id',$id);
         $stmt ->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE,'RecadoDAO');
 
-        if($stmt->execute()) {
-            $recado = $stmt->fetch()
-        };
-
-    endif;
+        if($stmt->execute()):
+            $recado = $stmt->fetch();
 ?>
 <form action="<?= isset($recado->id)?"?atualizar=$recado->id":""?>" method="post">
-    Nome: 
+    Nome:
     <input type="text" name="nome" id="nome" value="<?= $recado->nome??'' ?>"><br>
-    E-mail: 
+    E-mail:
     <input type="text" name="email" id="email" value="<?= $recado->email??'' ?>"><br>
-    Cidade: 
+    Cidade:
     <input type="text" name="cidade" id="cidade" value="<?= $recado->cidade??'' ?>"><br>
     Recado:
     <textarea name="recado" id="recado" cols="30" rows="10"><?= $recado->texto??'' ?></textarea><br>
@@ -34,30 +32,33 @@ require_once "RecadoDAO.php";
         $email = $_POST["email"];
         $cidade = $_POST["cidade"];
         $texto = $_POST["recado"];
-        
+
 
         if ($_POST["enviar"] == "Cadastrar"):
 
             $sql = "INSERT INTO tads.recados
             (nome, email, cidade, texto)
             VALUES(:nome, :email, :cidade, :texto);";
-            $stmt = $con->prepare($sql);         
+            $stmt = $con->prepare($sql);
 
         elseif ($_POST["enviar"] == "Atualizar"):
-            
+
             $id = $_GET["atualizar"];
             $sql = "UPDATE tads.recados SET nome=:nome, email=:email, cidade=:cidade, texto=:texto WHERE id=:id";
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':id',$id);
-        
+
         endif;
 
         $stmt->bindValue(':nome',$nome);
         $stmt->bindValue(':email',$email);
         $stmt->bindValue(':cidade',$cidade);
-        $stmt->bindValue(':texto',$texto);  
-        $stmt->execute(); 
+        $stmt->bindValue(':texto',$texto);
+        $stmt->execute();
 
     endif;
 
+endif;
+
+endif;
 ?>

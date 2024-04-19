@@ -7,7 +7,7 @@ class RecadoDAO{
     private $cidade;
     private $texto;
 
-    imprimeLinhaTabela(){
+    function imprimeLinhaTabela(){
         echo "
         <tr>\n
             <td> {$this->nome} </td>\n

@@ -1,7 +1,7 @@
 <?php
 
 require_once "Database.php";
-
+require_once "recados.php">
 $db = new Database();
 
 $con = $db->getConnection();
@@ -15,15 +15,12 @@ $con = $db->getConnection();
 </head>
 <body>
     <div class="formulario">
-<?php require_once "formulario.php";        
+<?php require_once "formulario.php";
 
 ?>
     </div>
     <div class="recados">
-<?php
-    require_once "recados.php">
-?>
-    </div>        
+    </div>
 </body>
 </html>
 <?php
